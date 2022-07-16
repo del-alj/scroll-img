@@ -1,13 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import {Box, Div} from "./style";
+import InfiniteScroll from "react-infinite-scroll-component";
+
+import { Box, Div } from "./style";
+
 export const ImageScroll = (props) => {
-    const { images } = props;
+    const [page, setPage] = useState(1);
+    const [images, setImages] = useState([]);
+
+    useEffect(() => {
+        const temp = props?.images
+        const index = 6 * page;
+
+        setImages(
+            temp?.slice(0, (index < temp?.length ? index : temp?.length)), 
+        )
+    }, [page])
 
     return (
-            <Box>
+        <Box>
+            <InfiniteScroll
+                dataLength={images.length}
+                next={() => setPage(page + 1)}
+                hasMore={true} >
                 {images?.map((elem, i) => {
-                    return <Div>
+                    return <Div key={i}>
                         <p >{elem}</p>
                         <LazyLoadImage
                             effect="blur"
@@ -17,7 +34,8 @@ export const ImageScroll = (props) => {
                             height={"400px"} />
                     </Div>
                 })}
-            </Box>
+            </InfiniteScroll>
+        </Box>
 
     )
 }
