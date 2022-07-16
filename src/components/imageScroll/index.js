@@ -29,8 +29,8 @@ export const ImageScroll = (props) => {
                         <img
                             src={`https://neoos.s3.eu-west-1.amazonaws.com/img/birds/${elem}`}
                             alt={elem}
-                            width={"300px"}
-                            height={"400px"} />
+                            width="300"
+                            height="400" />
                     </Div>
                 })}
             </InfiniteScroll>
