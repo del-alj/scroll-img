@@ -10,7 +10,7 @@ export const ImageScroll = (props) => {
 
     useEffect(() => {
         const temp = props?.images
-        const index = 6 * page;
+        const index = 3 * page;
 
         setImages(
             temp?.slice(0, (index < temp?.length ? index : temp?.length)), 
@@ -26,8 +26,7 @@ export const ImageScroll = (props) => {
                 {images?.map((elem, i) => {
                     return <Div key={i}>
                         <p >{elem}</p>
-                        <LazyLoadImage
-                            effect="blur"
+                        <img
                             src={`https://neoos.s3.eu-west-1.amazonaws.com/img/birds/${elem}`}
                             alt={elem}
                             width={"300px"}
