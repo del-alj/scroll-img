@@ -10,7 +10,7 @@ export const ImageScroll = (props) => {
 
     useEffect(() => {
         const temp = props?.images
-        const index = 3 * page;
+        const index = 6 * page;
 
         setImages(
             temp?.slice(0, (index < temp?.length ? index : temp?.length)), 
