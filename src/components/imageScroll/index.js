@@ -17,6 +17,21 @@ export const ImageScroll = (props) => {
         )
     }, [page])
 
+
+const hires_images = () => {
+    var imgs = document.getElementsByTagName('img');
+    for (let i = 0; i < imgs.length; i++) { 
+        if (imgs[i].realuri) {
+            imgs[i].src=imgs[i].realuri;
+        }
+     }
+}
+if (window.addEventListener) {
+     window.addEventListener('load', hires_images, false);
+} else if (window.attachEvent) {
+    window.attachEvent('onload', hires_images);
+}
+
     return (
         <Box>
             <InfiniteScroll
@@ -27,10 +42,15 @@ export const ImageScroll = (props) => {
                     return <Div key={i}>
                         <p >{elem}</p>
                         <img
+                            realurl={`https://neoos.s3.eu-west-1.amazonaws.com/img/birds/${elem}`}
                             src={`https://neoos.s3.eu-west-1.amazonaws.com/img/birds/${elem}`}
                             alt={elem}
                             width="300"
-                            height="400" />
+                            height="400" 
+                            
+                            />
+                           {hires_images}
+                          
                     </Div>
                 })}
             </InfiniteScroll>
