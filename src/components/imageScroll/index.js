@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import InfiniteScroll from "react-infinite-scroll-component";
-
 import { Box, Div } from "./style";
 
 export const ImageScroll = (props) => {
+  const temp = props?.images;
   const [page, setPage] = useState(1);
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(temp?.slice(0, 3));
+  const fetchMoreData = () => {
+   setTimeout(() => {
+     const index = 3 * page;
+     const tempimg = temp?.slice(images?.length -1 ,index );
+     setImages(images.concat(tempimg));
+     console.log(images, page);
+   }, 1000);
+ };
 
   useEffect(() => {
-    const temp = props?.images;
-    const index = 6 * page;
-
-    setImages(temp?.slice(0, index < temp?.length ? index : temp?.length));
-
+    if (page > 1)
+    fetchMoreData();
     hires_images();
   }, [page]);
 
@@ -31,14 +36,14 @@ export const ImageScroll = (props) => {
     window.addEventListener("load", hires_images, false);
   } else if (window.attachEvent) {
     window.attachEvent("onload", hires_images);
-  }
-
+  } 
   return (
-    <Box>
+    <Box >
       <InfiniteScroll
         dataLength={images.length}
         next={() => setPage(page + 1)}
         hasMore={true}
+        loader={<h4>Loading more 2 itens...</h4>}
       >
         {images?.map((elem, i) => {
           return (
