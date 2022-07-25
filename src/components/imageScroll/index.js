@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Box, Div } from "./style";
@@ -8,18 +9,35 @@ export const ImageScroll = (props) => {
   const temp = props?.images;
   const [page, setPage] = useState(1);
   const [images, setImages] = useState(temp?.slice(0, 3));
+  const checkimg = async (images) => {
+    let temp = [];
+    await images.forEach(async (elem) => {
+       await axios.get(`https://neoos.s3.eu-west-1.amazonaws.com/img/birds/${elem}`, {
+        headers: { 
+          'Access-Control-Allow-Origin' : '*',
+        },
+      }).then((res) => {
+        console.log("tititi", res);
+        temp.push(elem);
+      }).catch(()=> {
+        console.log("45");
+
+      })
+    });
+    return temp;
+  };
   const fetchMoreData = () => {
-   setTimeout(() => {
-     const index = 3 * page;
-     const tempimg = temp?.slice(images?.length -1 ,index );
-     setImages(images.concat(tempimg));
-     console.log(images, page);
-   }, 1000);
- };
+    setTimeout(async () => {
+      const index = 3 * page;
+      const tempimg = temp?.slice(images?.length - 1, index);
+      const imgi = await checkimg(tempimg);
+      console.log("log", imgi);
+      setImages(images.concat(tempimg));
+    }, 1000);
+  };
 
   useEffect(() => {
-    if (page > 1)
-    fetchMoreData();
+    if (page > 1) fetchMoreData();
     hires_images();
   }, [page]);
 
@@ -37,9 +55,10 @@ export const ImageScroll = (props) => {
     window.addEventListener("load", hires_images, false);
   } else if (window.attachEvent) {
     window.attachEvent("onload", hires_images);
-  } 
+  }
+
   return (
-    <Box >
+    <Box>
       <InfiniteScroll
         dataLength={images.length}
         next={() => setPage(page + 1)}
@@ -50,17 +69,19 @@ export const ImageScroll = (props) => {
           return (
             <Div key={i}>
               <p>{elem}</p>
-              <ProgressiveImage src={`https://neoos.s3.eu-west-1.amazonaws.com/img/birds/${elem}`}>
-              {(src, loading) => (
-              <img
-               className={`image${loading ? " loading" : " loaded"}`}
-                realurl={`https://neoos.s3.eu-west-1.amazonaws.com/img/birds/${elem}`}
-                src={
-                  src }
-                alt={elem}
-                width="300"
-                height="400"
-              />)}
+              <ProgressiveImage
+                src={`https://neoos.s3.eu-west-1.amazonaws.com/img/birds/${elem}`}
+              >
+                {(src, loading) => (
+                  <img
+                    className={`image${loading ? " loading" : " loaded"}`}
+                    realurl={`https://neoos.s3.eu-west-1.amazonaws.com/img/birds/${elem}`}
+                    src={src}
+                    alt={elem}
+                    width="300"
+                    height="400"
+                  />
+                )}
               </ProgressiveImage>
             </Div>
           );
