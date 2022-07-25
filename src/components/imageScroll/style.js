@@ -16,4 +16,17 @@ p {
     right: 0;
     margin: auto;
 }
+
+
+.loading {
+  filter: blur(20px);
+  clip-path: inset(0);
+}
+.loaded {
+  filter: blur(0px);
+  transition: filter 1.5s linear;
+}
+
+
 `;
+

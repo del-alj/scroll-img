@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Box, Div } from "./style";
+import ProgressiveImage from "react-progressive-graceful-image";
 
 export const ImageScroll = (props) => {
   const temp = props?.images;
@@ -49,15 +50,18 @@ export const ImageScroll = (props) => {
           return (
             <Div key={i}>
               <p>{elem}</p>
+              <ProgressiveImage src={`https://neoos.s3.eu-west-1.amazonaws.com/img/birds/${elem}`}>
+              {(src, loading) => (
               <img
+               className={`image${loading ? " loading" : " loaded"}`}
                 realurl={`https://neoos.s3.eu-west-1.amazonaws.com/img/birds/${elem}`}
                 src={
-                  "data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7"
-                }
+                  src }
                 alt={elem}
                 width="300"
                 height="400"
-              />
+              />)}
+              </ProgressiveImage>
             </Div>
           );
         })}
