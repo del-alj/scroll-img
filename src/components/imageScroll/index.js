@@ -31,7 +31,7 @@ export const ImageScroll = (props) => {
       const index = 3 * page;
       const tempimg = temp?.slice(images?.length - 1, index);
       const imgi = await checkimg(tempimg);
-      console.log("log", imgi);
+      console.log("logi", imgi);
       setImages(images.concat(tempimg));
     }, 1000);
   };
